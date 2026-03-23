@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node -e \"import\\(''./vite.config.js''\\).then\\(m => console.log\\(''Vite config OK:'', typeof m.default\\)\\)\")",
+      "Bash(node --input-type=module --eval \":*)",
+      "Bash(node:*)",
+      "Bash(npx vite:*)"
+    ]
+  }
+}
