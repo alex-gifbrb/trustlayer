@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { getSimulatedResponse } from "../data/simulatedResponses";
+import { fetchProject } from "../data/api";
 import { useResearch } from "../context/ResearchContext";
 import MessageContent from "../components/research/MessageContent";
 
@@ -137,9 +138,8 @@ export default function ResearchPage() {
   // ── Load project ──
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/projects/${ticker}`)
-      .then((r) => r.json())
-      .then((j) => { setProject(j.data); setLoading(false); })
+    fetchProject(ticker)
+      .then((data) => { setProject(data); setLoading(false); })
       .catch(() => setLoading(false));
   }, [ticker]);
 

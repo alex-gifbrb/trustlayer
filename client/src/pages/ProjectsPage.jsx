@@ -2,26 +2,17 @@ import { useState, useEffect } from "react";
 import MostTalkedAbout from "../components/MostTalkedAbout";
 import LaunchingSoon from "../components/LaunchingSoon";
 import PreSalesTable from "../components/PreSalesTable";
+import { fetchProjects } from "../data/api";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/projects")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch projects");
-        return res.json();
-      })
-      .then((json) => {
-        setProjects(json.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+    fetchProjects().then((data) => {
+      setProjects(data);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -43,17 +34,7 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-5 text-center">
-          <p className="text-red-400 font-medium text-sm mb-1">Failed to load projects</p>
-          <p className="text-red-400/60 text-xs">{error}</p>
-          <p className="text-slate-500 text-xs mt-2">
-            Make sure the server is running on port 3001
-          </p>
-        </div>
-      )}
-
-      {!loading && !error && (
+      {!loading && (
         <>
           <MostTalkedAbout projects={projects} />
           <LaunchingSoon projects={projects} />

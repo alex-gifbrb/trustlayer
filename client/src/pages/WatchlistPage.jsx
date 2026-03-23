@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWatchlist } from "../context/WatchlistContext";
 import TrustAiCard from "../components/TrustAiCard";
+import { fetchProjects } from "../data/api";
 
 const AI_SUMMARY =
   "Your watchlist currently spans DeFi lending and metaverse infrastructure — two high-conviction sectors with different risk profiles. Morpho's fundamentals are strong with deep liquidity, making it a lower-volatility anchor. Xyzverse is an early-stage bet with higher upside potential but more execution risk. Combined sentiment across your watchlist is 73% bullish. Consider setting price alerts for XYZ around the $0.009 resistance level.";
@@ -51,13 +52,10 @@ export default function WatchlistPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/projects")
-      .then((r) => r.json())
-      .then((json) => {
-        setProjects(json.data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    fetchProjects().then((data) => {
+      setProjects(data);
+      setLoading(false);
+    });
   }, []);
 
   const watched = projects.filter((p) => watchlist.includes(p.ticker));

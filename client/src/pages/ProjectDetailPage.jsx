@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchProject } from "../data/api";
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Treemap,
 } from "recharts";
@@ -839,13 +840,9 @@ export default function ProjectDetailPage() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    fetch(`/api/projects/${ticker}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Project not found");
-        return res.json();
-      })
-      .then((json) => {
-        setProject(json.data);
+    fetchProject(ticker)
+      .then((data) => {
+        setProject(data);
         setLoading(false);
       })
       .catch((err) => {
