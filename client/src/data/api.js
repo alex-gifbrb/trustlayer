@@ -1,11 +1,13 @@
 import { getMockProjects, getMockProject } from "./mockData";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 /**
  * Fetch all projects. Falls back to mock data if the API is unreachable.
  */
 export async function fetchProjects() {
   try {
-    const res = await fetch("/api/projects");
+    const res = await fetch(`${API_URL}/api/projects`);
     if (!res.ok) throw new Error("API error");
     const json = await res.json();
     return json.data;
@@ -20,7 +22,7 @@ export async function fetchProjects() {
  */
 export async function fetchProject(ticker) {
   try {
-    const res = await fetch(`/api/projects/${ticker}`);
+    const res = await fetch(`${API_URL}/api/projects/${ticker}`);
     if (!res.ok) throw new Error("not found");
     const json = await res.json();
     return json.data;
